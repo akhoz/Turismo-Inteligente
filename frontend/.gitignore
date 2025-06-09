@@ -6,11 +6,15 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-package-lock.json
+
 node_modules
 dist
 dist-ssr
 *.local
+
+.env
+
+package-lock.json
 
 # Editor directories and files
 .vscode/*
@@ -22,7 +26,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
-
-.flowbite-react/
-.vscode

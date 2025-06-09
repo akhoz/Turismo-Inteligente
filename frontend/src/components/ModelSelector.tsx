@@ -1,94 +1,68 @@
-import { FiCheckCircle } from "react-icons/fi"
-
-interface Model {
-  id: string
-  name: string
-  endpoint: string
-  color: string // aún se usa para el borde o estilos si quieres
-}
-
 interface ModelSelectorProps {
-  models: Model[]
-  selectedModels: Model[]
-  onModelsChange: (models: Model[]) => void
+  selectedModels: string[]
+  onToggleModel: (model: string) => void
 }
 
-const getModelIcon = (id: string): string => {
-  switch (id) {
-    case "chatgpt":
-      return "/assets/openai.png"
-    case "gemini":
-      return "/assets/gemini.png"
-    case "claude":
-      return "/assets/claude.png"
-    default:
-      return ""
-  }
-}
+const models = [
+  { id: "chat-gpt", name: "ChatGPT", icon: "/assets/openai.png", color: "bg-teal-400" },
+  { id: "gemini", name: "Gemini", icon: "/assets/gemini.png", color: "bg-blue-900" },
+  { id: "claude", name: "Claude", icon: "/assets/claude.png", color: "bg-purple-300" },
+]
 
-export default function ModelSelector({ models, selectedModels, onModelsChange }: ModelSelectorProps) {
-  const toggleModel = (model: Model) => {
-    const exists = selectedModels.some((m) => m.id === model.id)
-    onModelsChange(exists ? selectedModels.filter((m) => m.id !== model.id) : [...selectedModels, model])
-  }
-
-  const selectAll = () => onModelsChange(models)
-  const clearAll = () => onModelsChange([])
-
+export default function ModelSelector({ selectedModels, onToggleModel }: ModelSelectorProps) {
   return (
-    <div>
-      <div className="flex justify-between items-center mb-3">
-        <label className="text-sm font-medium text-gray-700">
-          Select AI Models ({selectedModels.length} selected)
-        </label>
-        <div className="flex gap-2 text-xs font-medium">
-          <button onClick={selectAll} className="text-accent hover:text-accent/80">Select All</button>
-          <span className="text-gray-300">|</span>
-          <button onClick={clearAll} className="text-gray-500 hover:text-gray-700">Clear All</button>
-        </div>
+    <div className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex flex-col">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-900">Modelos de IA</h2>
+        <p className="text-sm text-gray-500 mt-1">Selecciona uno o más modelos</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {models.map((model) => {
-          const isSelected = selectedModels.some((m) => m.id === model.id)
-          return (
-            <div
-              key={model.id}
-              onClick={() => toggleModel(model)}
-              className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
-                isSelected ? "border-accent bg-accent/5 shadow-sm" : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center">
-                <div
-                  className={`w-4 h-4 rounded border-2 flex items-center justify-center mr-3 ${
-                    isSelected ? "bg-accent border-accent" : "border-gray-300"
-                  }`}
-                >
-                  {isSelected && <FiCheckCircle className="text-white w-3 h-3" />}
-                </div>
-                <div className="flex-1 flex items-center">
-                  <img
-                    src={getModelIcon(model.id)}
-                    alt={model.name}
-                    className="w-5 h-5 object-contain mr-2"
-                  />
-                  <span className={`text-sm font-medium ${isSelected ? "text-accent" : "text-gray-900"}`}>
-                    {model.name}
-                  </span>
+      <div className="flex-1 p-4 space-y-3">
+        {models.map((model) => (
+          <button
+            key={model.id}
+            onClick={() => onToggleModel(model.id)}
+            className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
+              selectedModels.includes(model.id)
+                ? "border-blue-500 bg-blue-50 shadow-md"
+                : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm"
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              {/* Icono con fondo de color */}
+              <div className={`w-10 h-10 rounded-lg ${model.color} flex items-center justify-center`}>
+                <img src={model.icon} alt={model.name} className="w-6 h-6 object-contain" />
+              </div>
+
+              {/* Nombre del modelo */}
+              <div className="flex-1 text-left">
+                <div className="font-medium text-gray-900">{model.name}</div>
+                <div className={`text-xs ${selectedModels.includes(model.id) ? "text-blue-600" : "text-gray-500"}`}>
+                  {selectedModels.includes(model.id) ? "Activo" : "Inactivo"}
                 </div>
               </div>
+
+              {/* Selector de estado visual */}
+              <div
+                className={`w-4 h-4 rounded-full border-2 ${
+                  selectedModels.includes(model.id) ? "bg-blue-500 border-blue-500" : "border-gray-300"
+                }`}
+              >
+                {selectedModels.includes(model.id) && (
+                  <div className="w-full h-full rounded-full bg-white scale-50"></div>
+                )}
+              </div>
             </div>
-          )
-        })}
+          </button>
+        ))}
       </div>
 
-      {selectedModels.length > 0 && (
-        <div className="mt-3 p-3 bg-blue-50 rounded-lg text-blue-700 text-sm flex items-center gap-2">
-          <FiCheckCircle className="w-4 h-4" />
-          Selected models: {selectedModels.map((m) => m.name).join(", ")}
+      <div className="p-4 border-t border-gray-200">
+        <div className="text-xs text-gray-500 text-center">
+          {selectedModels.length} modelo{selectedModels.length !== 1 ? "s" : ""} seleccionado
+          {selectedModels.length !== 1 ? "s" : ""}
         </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -25,6 +25,7 @@ async def gemini_parsed_endpoint(req: PromptRequest):
     try:
         ai_text = await anyio.to_thread.run_sync(ask_gemini, req.prompt)
         parsed = parse_response_with_coordinates(ai_text)
+        print(parsed)
         return parsed
     except Exception as e:
         raise HTTPException(

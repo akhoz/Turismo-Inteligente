@@ -1,40 +1,42 @@
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api"
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api"
+import { type Location } from "./TravelMap"
 
-interface Location {
-  lugar: string
-  latitud: number
-  longitud: number
-}
-
-interface Props {
+interface GoogleMapViewProps {
   locations: Location[]
-  zoom?: number
 }
 
-const mapContainerStyle = {
+const containerStyle = {
   width: "100%",
-  height: "500px",
+  height: "100%",
 }
 
-export default function GoogleMapView({ locations, zoom = 12 }: Props) {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string,
+const centerDefault = {
+  lat: 10.0,
+  lng: -84.0,
+}
+
+export default function GoogleMapView({ locations }: GoogleMapViewProps) {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
   })
 
-  const center = locations.length
-    ? { lat: locations[0].latitud, lng: locations[0].longitud }
-    : { lat: 10.47, lng: -84.64 } // Centro predeterminado (La Fortuna)
+  const center = locations.length > 0 ? { lat: locations[0].lat, lng: locations[0].lng } : centerDefault
 
-  if (loadError) return <div>Error cargando el mapa</div>
-  if (!isLoaded) return <div>Cargando mapa...</div>
+  if (!isLoaded) return <div className="flex items-center justify-center h-full">Cargando mapa...</div>
 
   return (
-    <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={zoom}>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={locations.length > 1 ? 10 : 13}
+    >
       {locations.map((loc, index) => (
-        <Marker
+        <MarkerF
           key={index}
-          position={{ lat: loc.latitud, lng: loc.longitud }}
-          title={loc.lugar}
+          position={{ lat: loc.lat, lng: loc.lng }}
+          label={{ text: `${index + 1}`, className: "text-xs font-bold" }}
+          title={loc.name}
         />
       ))}
     </GoogleMap>
