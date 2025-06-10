@@ -4,7 +4,7 @@ interface ModelSelectorProps {
 }
 
 const models = [
-  { id: "chat-gpt", name: "ChatGPT", icon: "/assets/openai.png", color: "bg-teal-400" },
+  { id: "openai", name: "ChatGPT", icon: "/assets/openai.png", color: "bg-teal-400" },
   { id: "gemini", name: "Gemini", icon: "/assets/gemini.png", color: "bg-blue-900" },
   { id: "claude", name: "Claude", icon: "/assets/claude.png", color: "bg-purple-300" },
 ]

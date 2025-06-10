@@ -35,7 +35,7 @@ export default function GoogleMapView({ locations }: GoogleMapViewProps) {
         <MarkerF
           key={index}
           position={{ lat: loc.lat, lng: loc.lng }}
-          label={{ text: `${index + 1}`, className: "text-xs font-bold" }}
+          label={{ text: `${index + 1}`, className: "text-xs font-bold", color: "white" }}
           title={loc.name}
         />
       ))}

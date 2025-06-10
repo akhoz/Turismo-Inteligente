@@ -4,7 +4,7 @@ import VacationPlanner from "../components/VacationPlanner"
 import BusinessSuggestions from "../components/BusinessSuggestions"
 
 export default function Home() {
-  const [selectedModels, setSelectedModels] = useState<string[]>(["gpt-4"])
+  const [selectedModels, setSelectedModels] = useState<string[]>([])
   const [activeTab, setActiveTab] = useState<"vacation" | "business">("vacation")
 
   const toggleModel = (model: string) => {
