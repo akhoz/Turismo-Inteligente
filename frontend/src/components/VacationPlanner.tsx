@@ -4,6 +4,8 @@ import axios from "axios"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { useToast } from "../contexts/ToastProvider"
+import { vacationPromptPrefix, vacationPromptSuffix } from "../utils/prompts"
+
 
 interface VacationPlannerProps {
   selectedModels: string[]
@@ -60,7 +62,8 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
     for (const model of selectedModels) {
       try {
         const url = `http://127.0.0.1:8000/api/${model}/parsed`
-        const res = await axios.post<AIParsedResponse>(url, { prompt: input })
+        const fullPrompt = `${vacationPromptPrefix}\n\n${input}\n\n${vacationPromptSuffix}`
+        const res = await axios.post<AIParsedResponse>(url, { prompt: fullPrompt })
 
         newResponses[model] = res.data.mensaje
 
