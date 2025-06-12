@@ -39,8 +39,9 @@ export default function BusinessSuggestions({ selectedModels }: BusinessSuggesti
     const newResponses: Record<string, string> = {}
 
     for (const model of selectedModels) {
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const url = `http://127.0.0.1:8000/api/${model}/parsed`
+        const url = `${baseURL}/api/${model}`
         const fullPrompt = `${businessPromptPrefix}\n\n${input}\n\n${businessPromptSuffix}`
         const res = await axios.post<AIParsedResponse>(url, { prompt: fullPrompt })
 
