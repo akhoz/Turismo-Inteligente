@@ -6,7 +6,6 @@ import remarkGfm from "remark-gfm"
 import { useToast } from "../contexts/ToastProvider"
 import { vacationPromptPrefix, vacationPromptSuffix } from "../utils/prompts"
 
-
 interface VacationPlannerProps {
   selectedModels: string[]
 }
@@ -31,7 +30,6 @@ const modelNameMap: Record<string, string> = {
   gemini: "Gemini",
   claude: "Claude",
 }
-
 
 export default function VacationPlanner({ selectedModels }: VacationPlannerProps) {
   const [messages, setMessages] = useState<Message[]>([])
@@ -81,12 +79,12 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
           }
         }
       } catch (err) {
-          console.error(`Error al obtener respuesta de ${model}:`, err)
-          addToast({
-            type: "error",
-            title: `Error con ${model}`,
-            message: "Ocurrió un problema al obtener la respuesta.",
-          })
+        console.error(`Error al obtener respuesta de ${model}:`, err)
+        addToast({
+          type: "error",
+          title: `Error con ${model}`,
+          message: "Ocurrió un problema al obtener la respuesta.",
+        })
       }
     }
 
@@ -107,8 +105,8 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
   }
 
   return (
-    <div className="flex h-full">
-      <div className="flex-1 flex flex-col">
+    <div className="flex flex-col md:flex-row h-full">
+      <div className="w-full md:flex-1 flex flex-col">
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {messages.length === 0 && (
             <div className="text-center py-12">
@@ -123,7 +121,7 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`w-2/3 rounded-2xl px-4 py-3 ${
+                className={`w-full md:w-2/3 rounded-2xl px-4 py-3 ${
                   message.role === "user"
                     ? "bg-blue-500 text-white"
                     : "bg-white border border-gray-200 text-gray-900"
@@ -131,7 +129,7 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
               >
                 {message.role === "assistant" && Object.keys(responses).length > 0 ? (
                   <>
-                    <div className="flex space-x-2 mb-3">
+                    <div className="flex flex-wrap gap-2 mb-3">
                       {Object.keys(responses).map((model) => (
                         <button
                           key={model}
@@ -180,18 +178,18 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
         </div>
 
         <div className="border-t border-gray-200 p-6">
-          <form onSubmit={handleSubmit} className="flex space-x-4">
+          <form onSubmit={handleSubmit} className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ej: Quiero viajar a La Fortuna por 7 días..."
-              className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full md:flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               disabled={isLoading || selectedModels.length === 0}
             />
             <button
               type="submit"
               disabled={isLoading || selectedModels.length === 0}
-              className="bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-colors"
+              className="w-full md:w-auto bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-600 disabled:opacity-50 transition-colors"
             >
               Enviar
             </button>
@@ -202,7 +200,7 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
         </div>
       </div>
 
-      <div className="w-full md:w-96 border-t md:border-t-0 md:border-l border-gray-200">
+      <div className="w-full md:w-[380px] border-t md:border-t-0 md:border-l border-gray-200">
         <TravelMap locations={locations} />
       </div>
     </div>

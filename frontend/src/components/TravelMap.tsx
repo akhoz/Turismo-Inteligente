@@ -13,7 +13,8 @@ interface TravelMapProps {
 
 export default function TravelMap({ locations }: TravelMapProps) {
   return (
-    <div className="h-full flex flex-col">
+    <div className="flex flex-col h-[60vh] md:h-full">
+      {/* Encabezado */}
       <div className="p-4 border-b border-gray-200">
         <h3 className="font-medium text-gray-900">Lugares Recomendados</h3>
         <p className="text-sm text-gray-500">
@@ -22,7 +23,7 @@ export default function TravelMap({ locations }: TravelMapProps) {
         </p>
       </div>
 
-      {/* MAPA: usando GoogleMapView */}
+      {/* Mapa */}
       <div className="flex-1 min-h-[200px]">
         {locations.length === 0 ? (
           <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100 to-green-100">
@@ -38,7 +39,7 @@ export default function TravelMap({ locations }: TravelMapProps) {
 
       {/* Lista de ubicaciones */}
       {locations.length > 0 && (
-        <div className="border-t border-gray-200 max-h-48 overflow-y-auto">
+        <div className="border-t border-gray-200 overflow-y-auto max-h-[30vh] md:max-h-48">
           {locations.map((location, index) => (
             <div key={index} className="p-3 border-b border-gray-100 last:border-b-0">
               <div className="flex items-start space-x-3">
