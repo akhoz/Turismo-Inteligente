@@ -41,7 +41,7 @@ export default function BusinessSuggestions({ selectedModels }: BusinessSuggesti
     for (const model of selectedModels) {
       const baseURL = import.meta.env.VITE_API_URL
       try {
-        const url = `${baseURL}/api/${model}`
+        const url = `${baseURL}/api/${model}/parsed`
         const fullPrompt = `${businessPromptPrefix}\n\n${input}\n\n${businessPromptSuffix}`
         const res = await axios.post<AIParsedResponse>(url, { prompt: fullPrompt })
 
