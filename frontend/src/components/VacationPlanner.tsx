@@ -62,7 +62,7 @@ export default function VacationPlanner({ selectedModels }: VacationPlannerProps
     for (const model of selectedModels) {
       const baseURL = import.meta.env.VITE_API_URL
       try {
-        const url = `${baseURL}api/${model}/parsed`
+        const url = `${baseURL}/api/${model}/parsed`
         const fullPrompt = `${vacationPromptPrefix}\n\n${input}\n\n${vacationPromptSuffix}`
         const res = await axios.post<AIParsedResponse>(url, { prompt: fullPrompt })
 
